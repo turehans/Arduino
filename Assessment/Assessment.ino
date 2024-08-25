@@ -2,18 +2,17 @@
 #include <Ultrasonic.h>
 
 Ultrasonic ultrasonic(8, 9);
-int distance;
 Servo myservo;
 
-int pinLB = 5;
-int pinLF = 4;
+const int pinLB = 5;
+const int pinLF = 4;
 
-int pinRB = 7;
-int pinRF = 6;
+const int pinRB = 7;
+const int pinRF = 6;
 
-int LED = 10;
+const int LED = 10;
 
-int Switch = 2;
+const int Switch = 2;
 
 
 
@@ -37,65 +36,87 @@ void setup()
 
 void loop()
 {
+    static int distance = 0;
+    delay(5000);
+    forward();
+    delay(3000);
+    backward();
+    delay(3000);
+    stop();
+    delay(3000);
+    turnRight();
+    delay(3000);
+    turnLeft();
+    delay(3000);
+    rotateRight();
+    delay(3000);
+    rotateLeft();
+    delay(3000);
+    stop();
 
-    myservo.write(0);
-    distance = ultrasonic.read();
-
-    Serial.print("Distance in CM: ");
-    Serial.println(distance);
-
-
-    delay(2000);
-
-    myservo.write(90);
-
-    distance = ultrasonic.read();
-
-    Serial.print("Distance in CM: ");
-    Serial.println(distance);
-
-
-    delay(2000);
-    myservo.write(180);
-    distance = ultrasonic.read();
-
-    Serial.print("Distance in CM: ");
-    Serial.println(distance);
-
-    delay(2000);
-    myservo.write(90);
-    distance = ultrasonic.read();
-
-    Serial.print("Distance in CM: ");
-    Serial.println(distance);
-
-    delay(10000);
-
-    //forward(10000);
 }
 
 
-void forward(int time_in_millisec)
+void forward()
 {
     digitalWrite(pinLB, HIGH);
     digitalWrite(pinLF, LOW);
     digitalWrite(pinRB, HIGH);
     digitalWrite(pinRF, LOW);
-    delay(time_in_millisec);
+}
+
+void backward()
+{
+    digitalWrite(pinLB, LOW);
+    digitalWrite(pinLF, HIGH);
+    digitalWrite(pinRB, LOW);
+    digitalWrite(pinRF, HIGH);
+}
+
+void stop(){
     digitalWrite(pinLB, LOW);
     digitalWrite(pinLF, LOW);
     digitalWrite(pinRB, LOW);
     digitalWrite(pinRF, LOW);
 }
 
-void turnServo(int angle, int starting_angle)
+void turnRight(){
+    digitalWrite(pinLB, HIGH);
+    digitalWrite(pinLF, LOW);
+    digitalWrite(pinRB, LOW);
+    digitalWrite(pinRF, LOW);
+}
+
+void turnLeft(){
+    digitalWrite(pinLB, LOW);
+    digitalWrite(pinLF, LOW);
+    digitalWrite(pinRB, HIGH);
+    digitalWrite(pinRF, LOW);
+}
+
+void rotateRight(){
+    digitalWrite(pinLB, HIGH);
+    digitalWrite(pinLF, LOW);
+    digitalWrite(pinRB, LOW);
+    digitalWrite(pinRF, HIGH);
+}
+
+void rotateLeft(){
+    digitalWrite(pinLB, LOW);
+    digitalWrite(pinLF, HIGH);
+    digitalWrite(pinRB, HIGH);
+    digitalWrite(pinRF, LOW);
+}
+
+
+void turnServo(int angle, int starting_angle, int delayTime)
 {
     if (angle > starting_angle)
     {
         for (int i = starting_angle; i <= angle; i++)
         {
             myservo.write(i);
-            delay(15);
+            delay(delayTime);
         }
     }
     else
@@ -103,11 +124,11 @@ void turnServo(int angle, int starting_angle)
         for (int i = starting_angle; i >= angle; i--)
         {
             myservo.write(i);
-            delay(15);
+            delay(delayTime);
         }
     }
 
-    delay(2000);
+    delay(500);
 }
 
 void switchPressed() {
@@ -121,4 +142,9 @@ void switchPressed() {
         digitalWrite(LED, LOW);
     }
     last_interrupt_time = interrupt_time;
+}
+
+int readUltrasonic(){
+    int distance = ultrasonic.read();
+    return distance;
 }
