@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "Arduino_Practice_1_Blink/Blink/Blink.ino",
+    "port": "/dev/ttyUSB0",
+    "programmer": "arduinoisp"
+}
