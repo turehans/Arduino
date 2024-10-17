@@ -11,6 +11,7 @@ int pinRF = 15;
 void setup()
 {
     myservo.attach(3);
+    myservo.write(90);
     pinMode(pinLB, OUTPUT);
     pinMode(pinLF, OUTPUT);
     pinMode(pinRB, OUTPUT);
