@@ -55,7 +55,6 @@ void loop() {
             for (int i = 0; i < length; i++) {  // Start from index 0
                 Serial.print("i: ");
                 Serial.println(i);
-                delay(20);
                 turnServo(servoPositions[i], (i > 0) ? servoPositions[i-1] : 90, 15);
 
                 distance = readUltrasonic();
@@ -223,11 +222,12 @@ int readUltrasonic(){
 void avoidObstacle() {
     // Stop and rotate to clear the obstacle
     do {
+            delay(10);    // Small delay before rotating
             rotateRight();  // Rotate right to try to avoid the obstacle
-            delay(200);    // Delay to allow rotation
+            delay(150);    // Delay to allow rotation
             stop();         // Stop after rotating
-            delay(50);     // Stabilize after stopping
-        } while (readUltrasonic() < 40);  // Continue rotating if an obstacle is still detected
+            delay(10);     // Stabilize after stopping
+        } while (readUltrasonic() < 40 && readUltrasonic() != 0);  // Continue rotating if an obstacle is still detected
 
         // After obstacle is avoided, resume forward movement
         delay(500);  // Small delay before resuming forward motion
